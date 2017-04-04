@@ -1,0 +1,11 @@
+wolnosciowiec.api.heroku.deploy:
+    path: /{apiKey}/deploy/{repositoryName}
+    defaults:
+        _controller: "AppBundle:Deploy:index"
+    requirements:
+        apiKey: "%api_key%"
+
+wolnosciowiec.api.heroku.index:
+    path: /
+    defaults:
+        _controller: "AppBundle:Default:index"

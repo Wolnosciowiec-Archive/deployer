@@ -1,0 +1,26 @@
+services:
+    wolnosciowiec.api.heroku.deployer:
+        class: AppBundle\Service\Deployer\Deployer
+        arguments:
+            fetcher: "@wolnosciowiec.api.heroku.fetcher"
+            client: "@wolnosciowiec.api.heroku.client"
+            branchMatcher: "@wolnosciowiec.api.heroku.branch_matcher"
+
+    wolnosciowiec.api.heroku.fetcher:
+        class: AppBundle\Service\Fetcher\GitFetcher
+        arguments:
+            wrapper: "@libraries.git"
+            repositoriesStoragePath: "%storage_path%"
+            repositoriesOverridePath: "%storage_override_path%"
+
+    wolnosciowiec.api.heroku.client:
+        class: AppBundle\Service\HerokuClient
+
+    wolnosciowiec.api.heroku.branch_matcher:
+        class: AppBundle\Service\BranchMatcher
+
+    libraries.git:
+        class: GitWrapper\GitWrapper
+        shared: false
+
+
