@@ -42,7 +42,7 @@
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
         ],
         "post-install-cmd": [
-            "php -r \"if(!is_file('./app/config/deploy.yml')) { system('cp ./app/config/deploy.yml.dist ./app/config/deploy.yml'); }\""
+            "php -r \"if(!is_file('./app/config/deploy.yml')) { system('cp ./app/config/deploy.yml.dist ./app/config/deploy.yml'); }\"",
             "@symfony-scripts"
         ],
         "post-update-cmd": [
