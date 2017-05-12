@@ -1,0 +1,9 @@
+app:
+    repositories:
+        my_web_proxy:
+            git_url: https://github.com/Wolnosciowiec/web-proxy
+            git_branch: master
+            git_branch_math: exact
+            heroku_login: "xxxx@yyy.zzz"
+            heroku_token: "xxxx"
+            heroku_name: "my-web-proxy"

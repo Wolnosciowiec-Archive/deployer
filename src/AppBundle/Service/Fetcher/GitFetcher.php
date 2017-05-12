@@ -65,6 +65,10 @@ class GitFetcher
 
     protected function copyOverrideFiles(string $repositoryPath, string $repositoryName)
     {
+        if (!is_dir($this->repositoriesOverridePath . '/' . $repositoryName)) {
+            return;
+        }
+
         $filesystem = new Filesystem();
         $finder = new Finder();
         $finder->files()->in($this->repositoriesOverridePath . '/' . $repositoryName);

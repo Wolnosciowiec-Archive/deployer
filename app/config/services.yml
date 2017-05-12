@@ -19,6 +19,12 @@ services:
     wolnosciowiec.api.heroku.branch_matcher:
         class: AppBundle\Service\BranchMatcher
 
+    wolnosciowiec.api.heroku.exception_controller:
+        class: AppBundle\Controller\ExceptionController
+        arguments:
+            - "@twig"
+            - "%kernel.debug%"
+
     libraries.git:
         class: GitWrapper\GitWrapper
         shared: false

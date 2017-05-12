@@ -24,7 +24,7 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('git_branch')->isRequired(true)->end()
                         ->enumNode('git_branch_math')->values(['exact', 'regexp'])->isRequired(true)->end()
                         ->scalarNode('heroku_login')->isRequired(true)->end()
-                        ->scalarNode('heroku_password')->isRequired(true)->end()
+                        ->scalarNode('heroku_token')->isRequired(true)->end()
                         ->scalarNode('heroku_name')->isRequired(true)->end()
                     ->end()
                 ->end()

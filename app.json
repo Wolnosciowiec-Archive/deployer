@@ -1,0 +1,15 @@
+{
+    "name": "Wolnościowiec Deploy",
+    "description": "Allows to deploy from any GIT repository to the Heroku. Works well with github incoming webhooks.",
+    "repository": "https://github.com/Wolnosciowiec/wolnosciowiec-deploy",
+    "logo": "https://avatars0.githubusercontent.com/u/22785395",
+    "keywords": ["deploy", "webhook", "heroku", "cloud hosting", "git", "git deployment"],
+
+    "env": {
+        "API_KEY": {
+            "description": "Secret API authorization token that needs to be passed in the URL",
+            "required": true,
+            "generator": "secret"
+        }
+    }
+}

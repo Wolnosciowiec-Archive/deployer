@@ -80,12 +80,12 @@ class Deployer
         $git = $this->client->setUpUpstream(
             $git,
             $repository['heroku_login'],
-            $repository['heroku_password'],
+            $repository['heroku_token'],
             $repository['heroku_name']
         );
 
         $git->push('-u', 'origin', 'master', '--force');
-        $isSuccess = strpos($git->getOutput(), 'Branch master set up to track remote branch master from origin') !== false;
+        $isSuccess = preg_match('/Branch (.*) set up to track remote branch (.*) from origin/i', $git->getOutput()) > 0;
 
         return new DeployResult($isSuccess, $git->getOutput());
     }

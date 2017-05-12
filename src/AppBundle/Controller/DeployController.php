@@ -2,18 +2,22 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Service\Deployer\Deployer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
+ * DeployController
+ * ================
  *
+ * Provides an endpoint to deploy the service
  */
 class DeployController extends Controller
 {
     public function indexAction(Request $request, string $apiKey, string $repositoryName)
     {
-        $result = $this->get('wolnosciowiec.api.heroku.deployer')
+        $result = $this->getDeployer()
             ->deploy(
                 $request->getContent(),
                 $repositoryName
@@ -31,5 +35,10 @@ class DeployController extends Controller
                 ]
             ],
         $result->isSuccess() ? 200 : 500);
+    }
+
+    protected function getDeployer(): Deployer
+    {
+        return $this->get('wolnosciowiec.api.heroku.deployer');
     }
 }

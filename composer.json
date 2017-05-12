@@ -1,8 +1,8 @@
 {
-    "name": "symfony/framework-standard-edition",
-    "license": "MIT",
+    "name": "wolnosciowiec/deployer",
+    "license": "LGPLv3",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "Handles incoming web-hooks from eg. github and starts a deployment.",
     "autoload": {
         "psr-4": { "": "src/" },
         "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
@@ -12,7 +12,7 @@
         "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
     },
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=7.0",
         "cpliakas/git-wrapper": "^1.7",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
@@ -29,6 +29,7 @@
     },
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
+        "phpunit/phpunit": "5.*",
         "symfony/phpunit-bridge": "^3.0"
     },
     "scripts": {
@@ -48,9 +49,6 @@
         ]
     },
     "config": {
-        "platform": {
-            "php": "5.5.9"
-        },
         "sort-packages": true
     },
     "extra": {

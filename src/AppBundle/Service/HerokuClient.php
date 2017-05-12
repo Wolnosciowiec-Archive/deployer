@@ -33,11 +33,23 @@ class HerokuClient
     ): GitWorkingCopy {
         $this->saveAuthentication($herokuLogin, $herokuToken);
 
-        system($git->getWrapper()->getGitBinary() . ' config credential.helper "netrc -d -v"');
+        $this->setUpCredentialsHelper($git);
         $git->removeRemote('origin');
         $git->addRemote('origin', 'https://git.heroku.com/' . $herokuAppName . '.git');
 
         return $git;
+    }
+
+    /**
+     * Configure git to work with .netrc to take authorization from
+     * because Heroku does not accept passwords from HTTPS url
+     *
+     * @codeCoverageIgnore
+     * @param GitWorkingCopy $git
+     */
+    protected function setUpCredentialsHelper(GitWorkingCopy $git)
+    {
+        system($git->getWrapper()->getGitBinary() . ' config credential.helper "netrc -d -v"');
     }
 
     /**
@@ -60,6 +72,11 @@ class HerokuClient
         $this->writeNetRc($netrcContent);
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @throws NotEnoughPermissionsException
+     * @return array
+     */
     protected function readNetRc(): array
     {
         $homeDir = posix_getpwuid(posix_getuid())['dir'];
@@ -71,6 +88,10 @@ class HerokuClient
         return file($homeDir . '/.netrc') ?? [];
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @param array $netrcContent
+     */
     protected function writeNetRc(array $netrcContent)
     {
         $homeDir = posix_getpwuid(posix_getuid())['dir'];
@@ -96,7 +117,7 @@ class HerokuClient
                 $found++;
                 unset($netrcContent[$position]);
 
-            } elseif ($found === true
+            } elseif ($found > 0
                 && (strpos($line, 'password ') !== false || strpos($line, 'login ') !== false)) {
                 $found++;
                 unset($netrcContent[$position]);
@@ -107,6 +128,6 @@ class HerokuClient
             }
         }
 
-        return $netrcContent;
+        return array_values($netrcContent);
     }
 }
