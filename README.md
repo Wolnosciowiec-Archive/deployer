@@ -12,6 +12,7 @@ Features:
 - Same repository can be deployed into multiple accounts and applications on Heroku
 - Supports multiple branches
 - Runs on Heroku
+- Allows to append custom fields to the deployed repositories eg. configuration files or other overrides
 
 Free Software
 -------------
@@ -32,7 +33,17 @@ Quick start
 1. Clone the repository and do the `composer install`
 2. Look at the `app/config/parameters.yml` to eventually correct the API key or other settings
 3. Create a `app/config/deploy.yml` basing on the `app/config/deploy.yml.dist`.
-4. Set up a webserver to point to /web directory and rewrite everything through `app.php` (for testin use: `php bin/console server:start`)
+4. Optionally put your files that you want to deploy additionally with the application (eg. configuration files) into the `var/repositories_override/{repository name}`
+5. Set up a webserver to point to /web directory and rewrite everything through `app.php` (for testin use: `php bin/console server:start`)
+
+Adding configuration files, overriding files
+--------------------------------------------
+
+By putting custom files into a override directory there is a possibility to deploy additional files
+to the destination server.
+
+To achieve that you need to create a `var/repositories_override/{repository name}` directory and put your files in it.
+Everything will be copied to the repository, commited and pushed to the destination server.
 
 Example request
 ---------------
