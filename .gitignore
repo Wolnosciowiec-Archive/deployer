@@ -24,3 +24,5 @@
 /var/repositories_override/*
 !/var/repositories_override/.gitkeep
 /app/config/deploy.yml
+
+/docker/.env

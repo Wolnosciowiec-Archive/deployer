@@ -17,3 +17,4 @@ before_script:
 
 script:
     - ./vendor/bin/phpunit --coverage-text
+    - bash ./docker/travis-ci.sh

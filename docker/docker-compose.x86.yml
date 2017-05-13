@@ -1,0 +1,23 @@
+version: '2'
+
+networks:
+    deployer:
+
+services:
+    app:
+        build:
+            context: ./container
+            dockerfile: Dockerfile.x86
+        expose: 
+            - 80
+        ports:
+            - 7011:80
+        volumes:
+            - ../:/var/www
+        networks:
+            deployer:
+                aliases:
+                    - app
+        env_file:
+            - ./.env
+
