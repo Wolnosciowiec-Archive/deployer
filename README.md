@@ -1,10 +1,11 @@
-Heroku Deploy
-=============
+Wolnościowiec Deployer
+======================
 
 [![Build Status](https://travis-ci.org/Wolnosciowiec/heroku-deploy.svg?branch=master)](https://travis-ci.org/Wolnosciowiec/heroku-deploy)
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Wolnosciowiec/heroku-deploy)
 
 Handles incoming web-hooks from eg. github and starts a deployment.
+Works perfectly with Heroku.
 
 Features:
 - Multiple applications
