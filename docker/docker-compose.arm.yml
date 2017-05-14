@@ -4,7 +4,7 @@ networks:
     deployer:
 
 services:
-    app:
+    deployer_app:
         build:
             context: ./container
             dockerfile: Dockerfile
@@ -17,7 +17,7 @@ services:
         networks:
             deployer:
                 aliases:
-                    - app
+                    - deployer_app
         env_file:
             - ./.env
 

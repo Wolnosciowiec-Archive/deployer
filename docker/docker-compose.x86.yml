@@ -4,7 +4,7 @@ networks:
     deployer:
 
 services:
-    app:
+    deployer_app:
         build:
             context: ./container
             dockerfile: Dockerfile.x86
@@ -15,7 +15,7 @@ services:
         volumes:
             - ../:/var/www
         networks:
-            deployer:
+            deployer_app:
                 aliases:
                     - app
         env_file:
