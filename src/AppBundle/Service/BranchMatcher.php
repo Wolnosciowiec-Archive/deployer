@@ -28,8 +28,8 @@ class BranchMatcher
     protected function getPatterns()
     {
         return [
-            '/"ref": "refs\/heads\/(.*)"/i',
-            '/"branch": "(.*)"/i',
+            '/\"ref\"\:\ ?\"refs\/heads\/([A-Za-z0-9\-\_\/\+\.\,\*\:\;\?]+)\"/i',
+            '/"branch": "([A-Za-z0-9\-\_\/\+\.\,\*\:\;\?]+)"/i',
         ];
     }
 }
