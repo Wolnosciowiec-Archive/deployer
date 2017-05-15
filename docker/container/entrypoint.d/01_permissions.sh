@@ -8,6 +8,9 @@ echo " >> Setting correct permissions on configuration files"
 touch /var/www/app/config/parameters.yml
 chown www-data:www-data /var/www/app/config -R
 
+touch /var/www/.netrc
+chown www-data:www-data /var/www/.netrc -R
+
 echo " >> Setting up correct permissions for vendor directory"
 mkdir /var/www/vendor -p
 chown www-data:www-data /var/www/vendor /var/www/bin -R
