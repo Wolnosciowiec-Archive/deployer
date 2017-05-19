@@ -2,13 +2,13 @@ services:
     wolnosciowiec.api.deployer.handler:
         class: AppBundle\Service\Deployer\DeployHandler
         arguments:
-            branchMatcher: "@wolnosciowiec.api.heroku.branch_matcher"
+            branchMatcher: "@wolnosciowiec.api.deployer.branch_matcher"
 
     wolnosciowiec.api.deployer.handler.heroku:
         class: AppBundle\Service\Deployer\Method\HerokuMethod
         arguments:
-            fetcher: "@wolnosciowiec.api.heroku.fetcher"
-            client: "@wolnosciowiec.api.heroku.client"
+            fetcher: "@wolnosciowiec.api.deployer.fetcher"
+            client: "@wolnosciowiec.api.deployer.client"
         tags:
             - { name: deployer }
 
@@ -19,20 +19,20 @@ services:
         tags:
             - { name: deployer }
 
-    wolnosciowiec.api.heroku.fetcher:
+    wolnosciowiec.api.deployer.fetcher:
         class: AppBundle\Service\Fetcher\GitFetcher
         arguments:
             wrapper: "@libraries.git"
             repositoriesStoragePath: "%storage_path%"
             repositoriesOverridePath: "%storage_override_path%"
 
-    wolnosciowiec.api.heroku.client:
+    wolnosciowiec.api.deployer.client:
         class: AppBundle\Service\TargetPreparation\HerokuClient
 
-    wolnosciowiec.api.heroku.branch_matcher:
+    wolnosciowiec.api.deployer.branch_matcher:
         class: AppBundle\Service\BranchMatcher
 
-    wolnosciowiec.api.heroku.exception_controller:
+    wolnosciowiec.api.deployer.exception_controller:
         class: AppBundle\Controller\ExceptionController
         arguments:
             - "@twig"

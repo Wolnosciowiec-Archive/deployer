@@ -26,4 +26,4 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    exception_controller: wolnosciowiec.api.heroku.exception_controller:showAction
+    exception_controller: wolnosciowiec.api.deployer.exception_controller:showAction
