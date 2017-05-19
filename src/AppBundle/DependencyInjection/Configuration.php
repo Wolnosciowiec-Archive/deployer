@@ -13,7 +13,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('heroku_deploy');
+        $rootNode = $treeBuilder->root('deploy');
 
         $rootNode
             ->children()
@@ -23,10 +23,24 @@ class Configuration implements ConfigurationInterface
                         ->scalarNode('git_url')->isRequired(true)->end()
                         ->scalarNode('git_branch')->isRequired(true)->end()
                         ->enumNode('git_branch_math')->values(['exact', 'regexp'])->isRequired(true)->end()
-                        ->scalarNode('heroku_login')->isRequired(true)->end()
-                        ->scalarNode('heroku_token')->isRequired(true)->end()
-                        ->scalarNode('heroku_name')->isRequired(true)->end()
+
+                        ->arrayNode('heroku')
+                            ->children()
+                                ->scalarNode('login')->isRequired(true)->end()
+                                ->scalarNode('token')->isRequired(true)->end()
+                                ->scalarNode('name')->isRequired(true)->end()
+                            ->end()
+                        ->end()
+
+                        ->arrayNode('thin_deployer')
+                            ->children()
+                                ->scalarNode('url')->isRequired(true)->end()
+                                ->scalarNode('service_name')->isRequired(true)->end()
+                                ->scalarNode('token')->isRequired(true)->end()
+                            ->end()
+                        ->end()
                     ->end()
+
                 ->end()
             ->end();
 

@@ -6,21 +6,20 @@ use AppBundle\Entity\DeployResult;
 use AppBundle\Exception\Deployer\RepositoryNotFoundException;
 use AppBundle\Exception\UnexpectedStateException;
 use AppBundle\Service\BranchMatcher;
-use AppBundle\Service\Fetcher\GitFetcher;
-use AppBundle\Service\HerokuClient;
+use AppBundle\Service\Deployer\Method\DeployerMethodInterface;
 
 /**
- * Deployer
- * ========
+ * DeployHandler
+ * =============
  *
  * Deploys code from git/github to the Heroku's git triggering the deployment
  * automatically on push
  *
  * 1. A "Fetcher" is cloning the original repository, applying local patches (repository override per repository)
  * 2. "Client" is setting up the target git upstream
- * 3. "Deployer" is pushing to the repository
+ * 3. "DeployHandler" is pushing to the repository
  */
-class Deployer
+class DeployHandler
 {
     /**
      * Configuration from the key "heroku_deploy" that is placed in deploy.yml
@@ -30,24 +29,17 @@ class Deployer
     protected $configuration = [];
 
     /**
-     * @var GitFetcher $fetcher
-     */
-    protected $fetcher;
-
-    /**
-     * @var HerokuClient $client
-     */
-    protected $client;
-
-    /**
      * @var BranchMatcher $branchMatcher
      */
     protected $branchMatcher;
 
-    public function __construct(GitFetcher $fetcher, HerokuClient $client, BranchMatcher $branchMatcher)
+    /**
+     * @var DeployerMethodInterface[] $methods
+     */
+    protected $methods = [];
+
+    public function __construct(BranchMatcher $branchMatcher)
     {
-        $this->fetcher = $fetcher;
-        $this->client = $client;
         $this->branchMatcher = $branchMatcher;
     }
 
@@ -56,9 +48,9 @@ class Deployer
      *
      * @param array $configuration
      * @throws UnexpectedStateException
-     * @return Deployer
+     * @return DeployHandler
      */
-    public function setConfiguration(array $configuration): Deployer
+    public function setConfiguration(array $configuration): DeployHandler
     {
         if (!empty($this->configuration)) {
             throw new UnexpectedStateException('Configuration could be injected only once, do not create tricks');
@@ -76,18 +68,25 @@ class Deployer
             return new DeployResult(false, 'Branch name does not match');
         }
 
-        $git = $this->fetcher->cloneRepository($repository['git_url'], $repositoryName, $repository['git_branch']);
-        $git = $this->client->setUpUpstream(
-            $git,
-            $repository['heroku_login'],
-            $repository['heroku_token'],
-            $repository['heroku_name']
-        );
+        foreach ($this->methods as $method) {
+            if ($method->canHandleRepository($repository)) {
+                return $method->deploy($repository, $repositoryName);
+            }
+        }
 
-        $git->push('-u', 'origin', 'master', '--force');
-        $isSuccess = preg_match('/Branch (.*) set up to track remote branch (.*) from origin/i', $git->getOutput()) > 0;
+        return new DeployResult(false, 'Invalid configuration: No method is available to handle this service deployment');
+    }
 
-        return new DeployResult($isSuccess, $git->getOutput());
+    /**
+     * Used by the IoC container to add tagged services
+     *
+     * @param DeployerMethodInterface $method
+     * @return DeployHandler
+     */
+    public function addMethod(DeployerMethodInterface $method): DeployHandler
+    {
+        $this->methods[] = $method;
+        return $this;
     }
 
     protected function getRepository(string $repositoryName): array

@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Service\Deployer\Deployer;
+use AppBundle\Service\Deployer\DeployHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,8 +37,8 @@ class DeployController extends Controller
         $result->isSuccess() ? 200 : 500);
     }
 
-    protected function getDeployer(): Deployer
+    protected function getDeployer(): DeployHandler
     {
-        return $this->get('wolnosciowiec.api.heroku.deployer');
+        return $this->get('wolnosciowiec.api.deployer.handler');
     }
 }

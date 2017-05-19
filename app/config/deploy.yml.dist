@@ -1,9 +1,30 @@
 app:
     repositories:
+
+        #
+        # Example of service that deploys on a hosting "Heroku"
+        # (a commercial hosting with a free plan)
+        #
         my_web_proxy:
             git_url: https://github.com/Wolnosciowiec/web-proxy
             git_branch: master
             git_branch_math: exact
-            heroku_login: "xxxx@yyy.zzz"
-            heroku_token: "xxxx"
-            heroku_name: "my-web-proxy"
+
+            heroku:
+                login: "xxxx@yyy.zzz"
+                token: "xxxx"
+                name: "my-web-proxy"
+
+        #
+        # Example of service that deploys using the "Thin Deployer"
+        # service, which is a simple "webhook to shell command" application
+        #
+        my_local_deployment:
+            git_url: https://github.com/Wolnosciowiec/web-proxy
+            git_branch: master
+            git_branch_math: exact
+
+            thin_deployer:
+                url: http://think-deployer.internal.my-anarchist-infrastructure.org
+                service_name: webproxy
+                token: my-so-long-token-that-should-be-at-least-16-characters-long

@@ -5,20 +5,25 @@ Wolnościowiec Deployer
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Wolnosciowiec/heroku-deploy)
 
 Handles incoming web-hooks from eg. github and starts a deployment.
-Works perfectly with Heroku.
+Works perfectly with Heroku and Thin Deploy.
 
 Features:
+- Multiple handlers: deployment on Heroku hosting or a call to the "[Thin Deployer](https://github.com/Wolnosciowiec/thin-deployer)" service
 - Multiple applications
 - Different Heroku accounts for various applications
 - Same repository can be deployed into multiple accounts and applications on Heroku
 - Supports multiple branches
 - Runs on Heroku
-- Allows to append custom fields to the deployed repositories eg. configuration files or other overrides
+- Allows to append custom configuration and/or patches to the deployed repositories eg. configuration files or other overrides
 
-Free Software
+Free software
 -------------
 
 Created for an anarchist portal, with aim to propagate the freedom and grass-roots social movements where the human and it's needs is on first place, not the capital and profit.
+
+- https://wolnosciowiec.net
+- http://iwa-ait.org
+- http://zsp.net.pl
 
 Requirements
 ------------

@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace Tests\AppBundle\Service;
+namespace Tests\AppBundle\Service\TargetPreparation;
 
-use AppBundle\Service\HerokuClient;
+use AppBundle\Service\TargetPreparation\HerokuClient;
 use GitWrapper\GitWorkingCopy;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -57,7 +57,7 @@ class HerokuClientTest extends WebTestCase
             ->method('writeNetRc')
                 ->with($expected);
 
-        $client->setUpUpstream(
+        $client->prepareTarget(
             $this->createMock(GitWorkingCopy::class),
             $login,
             $password,
@@ -70,7 +70,7 @@ class HerokuClientTest extends WebTestCase
      */
     protected function createHerokuClient(): HerokuClient
     {
-        $builder = $this->getMockBuilder(HerokuClient::class);
+        $builder = $this->getMockBuilder(\AppBundle\Service\TargetPreparation\HerokuClient::class);
         $builder->setMethods(['writeNetRc', 'readNetRc', 'setUpCredentialsHelper']);
         $client = $builder->getMock();
 

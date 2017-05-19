@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Controller;
 
 use AppBundle\Controller\DeployController;
 use AppBundle\Entity\DeployResult;
-use AppBundle\Service\Deployer\Deployer;
+use AppBundle\Service\Deployer\DeployHandler;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,7 +19,7 @@ class DeployControllerTest extends WebTestCase
     public function testIndex()
     {
         /**
-         * @var Deployer|\PHPUnit_Framework_MockObject_MockObject $deployer
+         * @var DeployHandler|\PHPUnit_Framework_MockObject_MockObject $deployer
          * @var DeployController|\PHPUnit_Framework_MockObject_MockObject $controller
          */
         list($deployer, $controller) = $this->getController();
@@ -39,7 +39,7 @@ class DeployControllerTest extends WebTestCase
     public function testFailureIndex()
     {
         /**
-         * @var Deployer|\PHPUnit_Framework_MockObject_MockObject $deployer
+         * @var DeployHandler|\PHPUnit_Framework_MockObject_MockObject $deployer
          * @var DeployController|\PHPUnit_Framework_MockObject_MockObject $controller
          */
         list($deployer, $controller) = $this->getController();
@@ -55,7 +55,7 @@ class DeployControllerTest extends WebTestCase
 
     protected function getController()
     {
-        $deployer = $this->createMock(Deployer::class);
+        $deployer = $this->createMock(DeployHandler::class);
 
         $builder = $this->getMockBuilder(DeployController::class);
         $builder->setMethods(['getDeployer']);

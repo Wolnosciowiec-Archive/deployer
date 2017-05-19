@@ -1,9 +1,9 @@
 {
     "name": "Wolnościowiec Deploy",
-    "description": "Allows to deploy from any GIT repository to the Heroku. Works well with github incoming webhooks.",
+    "description": "Allows to deploy from any GIT repository. Works well with github incoming webhooks.",
     "repository": "https://github.com/Wolnosciowiec/wolnosciowiec-deploy",
     "logo": "https://avatars0.githubusercontent.com/u/22785395",
-    "keywords": ["deploy", "webhook", "heroku", "cloud hosting", "git", "git deployment"],
+    "keywords": ["deploy", "webhook", "heroku", "thin-deployer", "thin deployer", "cloud hosting", "git", "git deployment"],
 
     "env": {
         "API_KEY": {

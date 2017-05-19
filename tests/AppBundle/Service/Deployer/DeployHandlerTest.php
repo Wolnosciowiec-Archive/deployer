@@ -3,25 +3,28 @@
 namespace Tests\AppBundle\Service\Deployer;
 
 use AppBundle\Service\BranchMatcher;
-use AppBundle\Service\Deployer\Deployer;
+use AppBundle\Service\Deployer\DeployHandler;
+use AppBundle\Service\Deployer\Method\HerokuMethod;
 use AppBundle\Service\Fetcher\GitFetcher;
-use AppBundle\Service\HerokuClient;
+use AppBundle\Service\TargetPreparation\HerokuClient;
 use GitWrapper\GitWorkingCopy;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * @see Deployer
+ * @see DeployHandler
  */
-class DeployerTest extends WebTestCase
+class DeployHandlerTest extends WebTestCase
 {
     /**
+     * With handler: Heroku
+     *
      * @see Deployer::deploy()
      */
     public function testDeploy()
     {
-        $deployer = $this->createDeployer(
-            'Branch master set up to track remote branch master from origin'
-        );
+        $deployer = $this->createDeployer();
+        $this->injectHerokuMethod($deployer, 'Branch master set up to track remote branch master from origin');
+
         $result = $deployer->deploy(
             '{"ref": "refs/heads/master"}',
             'anarchifaq_test'
@@ -31,13 +34,15 @@ class DeployerTest extends WebTestCase
     }
 
     /**
+     * With handler: Heroku
+     *
      * @see Deployer::deploy()
      */
     public function testDeployFailure()
     {
-        $deployer = $this->createDeployer(
-            'Git process returned non-zero exit code...'
-        );
+        $deployer = $this->createDeployer();
+        $this->injectHerokuMethod($deployer, 'Git process returned non-zero exit code...');
+
         $result = $deployer->deploy(
             '{"ref": "refs/heads/master"}',
             'anarchifaq_test'
@@ -46,19 +51,24 @@ class DeployerTest extends WebTestCase
         $this->assertFalse($result->isSuccess());
     }
 
-    protected function createDeployer(string $gitOutput): Deployer
+    protected function injectHerokuMethod(DeployHandler $deployer, string $gitOutput)
     {
         $git = $this->createMock(GitWorkingCopy::class);
         $git->method('getOutput')
             ->willReturn($gitOutput);
 
         $client = $this->createMock(HerokuClient::class);
-        $client->method('setUpUpstream')
+        $client->method('prepareTarget')
             ->willReturn($git);
 
-        $deployer = new Deployer(
-            $this->createMock(GitFetcher::class),
-            $client,
+        $deployer->addMethod(
+            new HerokuMethod($this->createMock(GitFetcher::class), $client)
+        );
+    }
+
+    protected function createDeployer(): DeployHandler
+    {
+        $deployer = new DeployHandler(
             new BranchMatcher()
         );
 
@@ -68,9 +78,12 @@ class DeployerTest extends WebTestCase
                     'git_url' => 'https://github.com/Wolnosciowiec/anarchi-faq-pl',
                     'git_branch' => 'master',
                     'git_branch_math' => 'exact',
-                    'heroku_login' => 'test@gmail.com',
-                    'heroku_token' => 'test123',
-                    'heroku_name' => 'webproxy_1_test',
+
+                    'heroku' => [
+                        'login' => 'test@gmail.com',
+                        'token' => 'test123',
+                        'name' => 'webproxy_1_test',
+                    ],
                 ],
             ],
         ]);

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace AppBundle\Service;
+namespace AppBundle\Service\TargetPreparation;
 
 use AppBundle\Exception\Deployer\NotEnoughPermissionsException;
 use GitWrapper\GitWorkingCopy;
@@ -25,7 +25,7 @@ class HerokuClient
      * @throws NotEnoughPermissionsException
      * @return GitWorkingCopy
      */
-    public function setUpUpstream(
+    public function prepareTarget(
         GitWorkingCopy $git,
         string $herokuLogin,
         string $herokuToken,

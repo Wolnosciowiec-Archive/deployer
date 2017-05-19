@@ -6,6 +6,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * AppExtension
@@ -27,9 +28,13 @@ class AppExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $deployer = $container->findDefinition('wolnosciowiec.api.heroku.deployer');
+        $deployer = $container->findDefinition('wolnosciowiec.api.deployer.handler');
         $deployer->addMethodCall('setConfiguration', [$config]);
 
-        $container->setDefinition('wolnosciowiec.api.heroku.deployer', $deployer);
+        foreach ($container->findTaggedServiceIds('deployer') as $methodServiceId => $details) {
+            $deployer->addMethodCall('addMethod', [new Reference($methodServiceId)]);
+        }
+
+        $container->setDefinition('wolnosciowiec.api.deployer.handler', $deployer);
     }
 }

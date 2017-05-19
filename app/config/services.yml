@@ -1,10 +1,23 @@
 services:
-    wolnosciowiec.api.heroku.deployer:
-        class: AppBundle\Service\Deployer\Deployer
+    wolnosciowiec.api.deployer.handler:
+        class: AppBundle\Service\Deployer\DeployHandler
+        arguments:
+            branchMatcher: "@wolnosciowiec.api.heroku.branch_matcher"
+
+    wolnosciowiec.api.deployer.handler.heroku:
+        class: AppBundle\Service\Deployer\Method\HerokuMethod
         arguments:
             fetcher: "@wolnosciowiec.api.heroku.fetcher"
             client: "@wolnosciowiec.api.heroku.client"
-            branchMatcher: "@wolnosciowiec.api.heroku.branch_matcher"
+        tags:
+            - { name: deployer }
+
+    wolnosciowiec.api.deployer.handler.thin_deployer:
+        class: AppBundle\Service\Deployer\Method\ThinDeployerMethod
+        arguments:
+            client: "@libraries.guzzlehttp.client"
+        tags:
+            - { name: deployer }
 
     wolnosciowiec.api.heroku.fetcher:
         class: AppBundle\Service\Fetcher\GitFetcher
@@ -14,7 +27,7 @@ services:
             repositoriesOverridePath: "%storage_override_path%"
 
     wolnosciowiec.api.heroku.client:
-        class: AppBundle\Service\HerokuClient
+        class: AppBundle\Service\TargetPreparation\HerokuClient
 
     wolnosciowiec.api.heroku.branch_matcher:
         class: AppBundle\Service\BranchMatcher
@@ -27,6 +40,10 @@ services:
 
     libraries.git:
         class: GitWrapper\GitWrapper
+        shared: false
+
+    libraries.guzzlehttp.client:
+        class: GuzzleHttp\Client
         shared: false
 
 

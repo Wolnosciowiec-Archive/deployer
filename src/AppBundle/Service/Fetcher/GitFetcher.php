@@ -95,7 +95,7 @@ class GitFetcher
         $git->add('.');
 
         try {
-            $git->commit('[Wolnosciowiec][Deployer] ' . date('Y-m-d H:i:s'));
+            $git->commit('[Wolnosciowiec][DeployHandler] ' . date('Y-m-d H:i:s'));
 
         } catch (GitException $e) { };
     }
